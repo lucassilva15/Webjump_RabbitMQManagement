@@ -34,7 +34,7 @@
                        showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Queues</label>
                     <frontend_model>Webjump\RabbitMQManagement\Block\Adminhtml\Form\Field\Queues</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <backend_model>Webjump\RabbitMQManagement\Model\Adminhtml\Attribute\Validator</backend_model>
                 </field>
             </group>
         </section>
