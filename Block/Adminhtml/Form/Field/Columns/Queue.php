@@ -12,10 +12,29 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Block\Adminhtml\Form\Field\Columns;
 
+use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
+use Webjump\RabbitMQManagement\Model\Queue\Service;
 
 class Queue extends Select
 {
+    /** @var Service */
+    private $queueService;
+
+    /**
+     * Queue constructor.
+     *
+     * @param Context $context
+     * @param Service $queueService
+     * @param array $data
+     */
+    public function __construct(Context $context, Service $queueService, array $data = [])
+    {
+
+        parent::__construct($context, $data);
+        $this->queueService = $queueService;
+    }
+
     /**
      * SetInputName method
      *
@@ -60,9 +79,6 @@ class Queue extends Select
      */
     private function getSourceOptions(): array
     {
-        return [
-            ['label' => 'async.products.all', 'value' => 'async.products.all'],
-            ['label' => 'wj.linxsyncproduct.all', 'value' => 'wj.linxsyncproduct.all'],
-        ];
+        return $this->queueService->getQueueList();
     }
 }

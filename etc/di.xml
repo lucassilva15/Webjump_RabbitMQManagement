@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webjump\RabbitMQManagement\Api\HttpClientInterface"
+                type="Webjump\RabbitMQManagement\Model\Http\Client\ZendClient"/>
+    <preference for="Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface"
+                type="Webjump\RabbitMQManagement\Model\Http\Data\Response"/>
+</config>
