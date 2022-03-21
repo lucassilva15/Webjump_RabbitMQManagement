@@ -12,21 +12,21 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
-use Webjump\RabbitMQManagement\Model\Requests\QueueList;
+use Webjump\RabbitMQManagement\Model\Requests\QueueListFactory;
 
 class GetQueueList
 {
-    /** @var QueueList */
-    private $queueList;
+    /** @var QueueListFactory */
+    private $queueListFactory;
 
     /**
      * GetQueueList constructor.
      *
-     * @param QueueList $queueList
+     * @param QueueListFactory $queueListFactory
      */
-    public function __construct(QueueList $queueList)
+    public function __construct(QueueListFactory $queueListFactory)
     {
-        $this->queueList = $queueList;
+        $this->queueListFactory = $queueListFactory;
     }
 
     /**
@@ -37,7 +37,9 @@ class GetQueueList
     public function execute(): array
     {
         $queues = [];
-        $response = $this->queueList->doRequest();
+
+        $request = $this->queueListFactory->create();
+        $response = $request->doRequest();
         $items = $response->getBodyArray();
 
         if (empty($items) === true) {
