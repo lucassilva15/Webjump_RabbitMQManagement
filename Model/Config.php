@@ -19,7 +19,8 @@ class Config
 {
     const BASE_PATH = 'rabbitmq_management';
     const ENABLED_MODULE_FLAG = 'general/enabled';
-    const QUEUES_FLAG = 'queues';
+    const SERVICE_PORT_FIELD = 'rabbitmq_configuration/service_port';
+    const QUEUES_FLAG = 'rabbitmq_configuration/queues';
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
@@ -85,10 +86,22 @@ class Config
      *
      * @param int|null $storeId
      *
-     * @return array
+     * @return array|null
      */
     public function getQueuesOptions(int $storeId = null): array
     {
         return $this->getValue(self::QUEUES_FLAG, $storeId);
+    }
+
+    /**
+     * GetServicePort method
+     *
+     * @param int|null $storeId
+     *
+     * @return string|null
+     */
+    public function getServicePort(int $storeId = null): ?string
+    {
+        return $this->getValue(self::SERVICE_PORT_FIELD, $storeId);
     }
 }

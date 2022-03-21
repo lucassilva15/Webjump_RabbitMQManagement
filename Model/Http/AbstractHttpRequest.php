@@ -13,33 +13,41 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Http;
 
 use Webjump\RabbitMQManagement\Api\HttpClientInterface;
-use Webjump\RabbitMQManagement\Model\AmqpHelper;
+use Webjump\RabbitMQManagement\Model\AmqpConfig;
+use Webjump\RabbitMQManagement\Model\Http\Builders\Endpoint;
 
-abstract class AbstractHttpService
+abstract class AbstractHttpRequest
 {
     /** @var HttpClientInterface */
     protected $httpClient;
 
-    /** @var AmqpHelper */
-    private $amqpHelper;
+    /** @var Endpoint */
+    private $endpointBuilder;
+
+    /** @var AmqpConfig */
+    private $amqpConfig;
 
     /** @var array */
     private $data;
 
     /**
-     * AbstractHttpService constructor.
+     * AbstractHttpRequest constructor.
      *
      * @param HttpClientInterface $httpClient
-     * @param AmqpHelper $amqpHelper
+     * @param Endpoint $endpointBuilder
+     * @param AmqpConfig $amqpConfig
      * @param array $data
      */
     public function __construct(
         HttpClientInterface $httpClient,
-        AmqpHelper          $amqpHelper,
+        Endpoint            $endpointBuilder,
+        AmqpConfig          $amqpConfig,
         array               $data = []
-    ) {
+    )
+    {
         $this->httpClient = $httpClient;
-        $this->amqpHelper = $amqpHelper;
+        $this->endpointBuilder = $endpointBuilder;
+        $this->amqpConfig = $amqpConfig;
         $this->data = $data;
     }
 
@@ -49,10 +57,11 @@ abstract class AbstractHttpService
      * @param string $resource
      *
      * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function generateEndpoint(string $resource): string
     {
-        return "http://{$this->amqpHelper->getHost()}:15672$resource";
+        return $this->endpointBuilder->build($resource);
     }
 
     /**
@@ -76,8 +85,8 @@ abstract class AbstractHttpService
      */
     private function getBasicToken(): string
     {
-        $username = $this->amqpHelper->getUsername();
-        $password = $this->amqpHelper->getPassword();
+        $username = $this->amqpConfig->getUsername();
+        $password = $this->amqpConfig->getPassword();
         return base64_encode("$username:$password");
     }
 

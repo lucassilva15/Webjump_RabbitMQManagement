@@ -12,21 +12,21 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model;
 
-use Magento\Framework\Amqp\Config as AmqpConfig;
+use Magento\Framework\Amqp\Config;
 
-class AmqpHelper
+class AmqpConfig
 {
-    /** @var AmqpConfig */
-    private $amqpConfig;
+    /** @var Config */
+    private $config;
 
     /**
      * AmqpHelper constructor.
      *
-     * @param AmqpConfig $amqpConfig
+     * @param Config $config
      */
-    public function __construct(AmqpConfig $amqpConfig)
+    public function __construct(Config $config)
     {
-        $this->amqpConfig = $amqpConfig;
+        $this->config = $config;
     }
 
     /**
@@ -36,7 +36,7 @@ class AmqpHelper
      */
     public function getHost(): ?string
     {
-        return $this->amqpConfig->getValue(AmqpConfig::HOST);
+        return $this->config->getValue(Config::HOST);
     }
 
     /**
@@ -46,7 +46,7 @@ class AmqpHelper
      */
     public function getPort(): ?string
     {
-        return $this->amqpConfig->getValue(AmqpConfig::PORT);
+        return $this->config->getValue(Config::PORT);
     }
 
     /**
@@ -56,7 +56,7 @@ class AmqpHelper
      */
     public function getUsername(): ?string
     {
-        return $this->amqpConfig->getValue(AmqpConfig::USERNAME);
+        return $this->config->getValue(Config::USERNAME);
     }
 
     /**
@@ -66,6 +66,16 @@ class AmqpHelper
      */
     public function getPassword(): ?string
     {
-        return $this->amqpConfig->getValue(AmqpConfig::PASSWORD);
+        return $this->config->getValue(Config::PASSWORD);
+    }
+
+    /**
+     * GetSsl method
+     *
+     * @return string|null
+     */
+    public function getSsl(): ?string
+    {
+        return $this->config->getValue(Config::SSL);
     }
 }

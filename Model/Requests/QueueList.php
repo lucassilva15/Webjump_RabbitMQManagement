@@ -14,10 +14,10 @@ namespace Webjump\RabbitMQManagement\Model\Requests;
 
 use Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface;
 use Webjump\RabbitMQManagement\Api\HttpServiceInterface;
-use Webjump\RabbitMQManagement\Model\Http\AbstractHttpService;
+use Webjump\RabbitMQManagement\Model\Http\AbstractHttpRequest;
 use Zend_Http_Client;
 
-final class QueueList extends AbstractHttpService implements HttpServiceInterface
+final class QueueList extends AbstractHttpRequest implements HttpServiceInterface
 {
     const RESOURCE = '/api/queues';
 

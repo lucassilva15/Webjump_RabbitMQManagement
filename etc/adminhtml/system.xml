@@ -27,10 +27,16 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="rabbitmq_configuration" translate="label" type="text" sortOrder="20"
+            <group id="rabbitmq_configuration" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>RabbitMQ Configuration</label>
-                <field id="queues" translate="label" type="select" sortOrder="10"
+                <field id="service_port" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Service Port</label>
+                    <comment>RabbitMQ Service Port</comment>
+                    <validate>required-entry validate-digits validate-number</validate>
+                </field>
+                <field id="queues" translate="label" type="select" sortOrder="20"
                        showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Queues</label>
                     <frontend_model>Webjump\RabbitMQManagement\Block\Adminhtml\Form\Field\Queues</frontend_model>

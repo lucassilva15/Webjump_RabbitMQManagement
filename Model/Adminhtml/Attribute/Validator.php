@@ -121,8 +121,8 @@ class Validator extends ArraySerialized
     private function checkIfQueueIsDuplicated(array $attributeCodes, string $queue): bool
     {
         if (in_array($queue, $attributeCodes)) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
