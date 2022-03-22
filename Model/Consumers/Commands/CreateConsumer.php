@@ -56,10 +56,7 @@ class CreateConsumer
             $neededConsumers = ceil((float)($queueMessages / $queue['read_messages']));
             if ($consumers < $neededConsumers) {
                 for ($consumersCount = $consumers; $consumersCount < $neededConsumers; $consumersCount++) {
-                    $output = shell_exec("php magento queue:consumers:start --max-messages={$queue['read_messages']} {$queue['queue']} &");
-                    $dir = shell_exec('pwd');
-                    print_r($dir);
-                    print_r($output);
+                    exec("php magento queue:consumers:start --max-messages={$queue['read_messages']} {$queue['queue']} > /dev/null &");
                 }
             }
         }
