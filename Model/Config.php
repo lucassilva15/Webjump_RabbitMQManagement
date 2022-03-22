@@ -86,9 +86,9 @@ class Config
      *
      * @param int|null $storeId
      *
-     * @return array|null
+     * @return string|null
      */
-    public function getQueuesOptions(int $storeId = null): array
+    public function getQueues(int $storeId = null):? string
     {
         return $this->getValue(self::QUEUES_FLAG, $storeId);
     }

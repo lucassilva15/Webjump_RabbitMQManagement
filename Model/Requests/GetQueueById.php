@@ -13,13 +13,40 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Requests;
 
 use Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface;
+use Webjump\RabbitMQManagement\Api\HttpClientInterface;
 use Webjump\RabbitMQManagement\Api\HttpServiceInterface;
+use Webjump\RabbitMQManagement\Model\AmqpConfig;
 use Webjump\RabbitMQManagement\Model\Http\AbstractHttpRequest;
+use Webjump\RabbitMQManagement\Model\Http\Builders\Endpoint;
 use Zend_Http_Client;
 
-final class QueueList extends AbstractHttpRequest implements HttpServiceInterface
+final class GetQueueById extends AbstractHttpRequest implements HttpServiceInterface
 {
-    const RESOURCE = '/api/queues';
+    const RESOURCE = '/api/queues/%2F/';
+
+    /** @var string */
+    private $queueCode;
+
+    /**
+     * GetQueueById constructor.
+     *
+     * @param HttpClientInterface $httpClient
+     * @param Endpoint $endpointBuilder
+     * @param AmqpConfig $amqpConfig
+     * @param string $queueCode
+     * @param array $data
+     */
+    public function __construct(
+        HttpClientInterface $httpClient,
+        Endpoint            $endpointBuilder,
+        AmqpConfig          $amqpConfig,
+        string              $queueCode,
+        array               $data = []
+    )
+    {
+        $this->queueCode = $queueCode;
+        parent::__construct($httpClient, $endpointBuilder, $amqpConfig, $data);
+    }
 
     /**
      * GetEndpoint method
@@ -29,7 +56,7 @@ final class QueueList extends AbstractHttpRequest implements HttpServiceInterfac
      */
     public function getEndpoint(): string
     {
-        return $this->generateEndpoint(self::RESOURCE);
+        return $this->generateEndpoint(self::RESOURCE . $this->queueCode);
     }
 
     /**

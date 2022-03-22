@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="webjump_rabbitmq_management_create_consumers"
+             instance="Webjump\RabbitMQManagement\Cron\CreateConsumers"
+             method="execute">
+            <schedule>*/1 * * * *</schedule>
+        </job>
+    </group>
+</config>
