@@ -17,7 +17,7 @@ use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
-    const BASE_PATH = 'rabbitmq_management';
+    const BASE_PATH = 'webjump_rabbitmq_management';
     const ENABLED_MODULE_FLAG = 'general/enabled';
     const SERVICE_PORT_FIELD = 'rabbitmq_configuration/service_port';
     const QUEUES_FLAG = 'rabbitmq_configuration/queues';
