@@ -17,7 +17,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 
 class CreateConsumers
 {
-    const CONSUMERS_COMMAND = "php magento queue:consumers:start --max-messages=%s %s > /dev/null &";
+    const CONSUMERS_COMMAND = "/bin/magento queue:consumers:start %s %s";
 
     /** @var ShellInterface */
     private $shellBackground;
@@ -55,7 +55,7 @@ class CreateConsumers
                 $queue['queue'],
             ];
 
-            $command = $php . ' ' . BP . '/bin/magento queue:consumers:start %s %s';
+            $command = $php . ' ' . BP . self::CONSUMERS_COMMAND;
 
             $this->shellBackground->execute($command, $arguments);
         }
