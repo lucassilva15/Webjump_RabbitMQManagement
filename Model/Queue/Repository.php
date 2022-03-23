@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model\Queue;
 
+use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers;
+use Webjump\RabbitMQManagement\Model\Queue\Commands\GetAvailableConsumersQuantity;
 use Webjump\RabbitMQManagement\Model\Queue\Commands\GetQueueList;
 
 class Repository
@@ -19,14 +21,28 @@ class Repository
     /** @var GetQueueList */
     private $getQueueListCommand;
 
+    /** @var GetAvailableConsumersQuantity */
+    private $getAvailableConsumersQuantityCommand;
+
+    /** @var CreateConsumers */
+    private $createConsumersCommand;
+
     /**
      * Repository constructor.
      *
      * @param GetQueueList $getQueueListCommand
+     * @param GetAvailableConsumersQuantity $getAvailableConsumersQuantityCommand
+     * @param CreateConsumers $createConsumersCommand
      */
-    public function __construct(GetQueueList $getQueueListCommand)
+    public function __construct(
+        GetQueueList                  $getQueueListCommand,
+        GetAvailableConsumersQuantity $getAvailableConsumersQuantityCommand,
+        CreateConsumers               $createConsumersCommand
+    )
     {
         $this->getQueueListCommand = $getQueueListCommand;
+        $this->getAvailableConsumersQuantityCommand = $getAvailableConsumersQuantityCommand;
+        $this->createConsumersCommand = $createConsumersCommand;
     }
 
     /**
@@ -37,5 +53,30 @@ class Repository
     public function getQueueList(): array
     {
         return $this->getQueueListCommand->execute();
+    }
+
+    /**
+     * GetAvailableConsumersQuantity method
+     *
+     * @param array $queue
+     *
+     * @return int
+     */
+    public function getAvailableConsumersQuantity(array $queue): int
+    {
+        return $this->getAvailableConsumersQuantityCommand->execute($queue);
+    }
+
+    /**
+     * CreateConsumers method
+     *
+     * @param array $queue
+     * @param int $consumersToBeCreated
+     *
+     * @return void
+     */
+    public function createConsumers(array $queue, int $consumersToBeCreated)
+    {
+        $this->createConsumersCommand->execute($queue, $consumersToBeCreated);
     }
 }

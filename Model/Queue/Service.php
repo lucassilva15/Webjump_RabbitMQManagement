@@ -36,4 +36,29 @@ class Service
     {
         return $this->repository->getQueueList();
     }
+
+    /**
+     * GetAvailableConsumersQuantity method
+     *
+     * @param array $queue
+     *
+     * @return int
+     */
+    public function getAvailableConsumersQuantity(array $queue): int
+    {
+        return $this->repository->getAvailableConsumersQuantity($queue);
+    }
+
+    /**
+     * CreateConsumers method
+     *
+     * @param array $queue
+     * @param int $consumersToBeCreated
+     *
+     * @return void
+     */
+    public function createConsumers(array $queue, int $consumersToBeCreated)
+    {
+        $this->repository->createConsumers($queue, $consumersToBeCreated);
+    }
 }

@@ -14,7 +14,7 @@ namespace Webjump\RabbitMQManagement\Cron;
 
 use Magento\Framework\Serialize\Serializer\Json;
 use Webjump\RabbitMQManagement\Model\Config;
-use Webjump\RabbitMQManagement\Model\Consumers\Service;
+use Webjump\RabbitMQManagement\Model\Queue\Service;
 
 class CreateConsumers
 {
@@ -25,20 +25,20 @@ class CreateConsumers
     private $json;
 
     /** @var Service */
-    private $consumersService;
+    private $queueService;
 
     /**
      * CreateConsumers constructor.
      *
      * @param Config $config
      * @param Json $json
-     * @param Service $consumersService
+     * @param Service $queueService
      */
-    public function __construct(Config $config, Json $json, Service $consumersService)
+    public function __construct(Config $config, Json $json, Service $queueService)
     {
         $this->config = $config;
         $this->json = $json;
-        $this->consumersService = $consumersService;
+        $this->queueService = $queueService;
     }
 
     /**
@@ -49,10 +49,21 @@ class CreateConsumers
     public function execute()
     {
         $queuesJson = $this->config->getQueues();
+
+        if (
+            $this->config->isEnabled() === false
+            || empty($queuesJson) === true
+        ) {
+            return;
+        }
+
         $queues = $this->json->unserialize($queuesJson);
 
-        foreach($queues as $queue){
-            $this->consumersService->createConsumer($queue);
+        foreach ($queues as $queue) {
+            $consumersToBeCreated = $this->queueService->getAvailableConsumersQuantity($queue);
+            if ($consumersToBeCreated > 0) {
+                $this->queueService->createConsumers($queue, $consumersToBeCreated);
+            }
         }
     }
 }
