@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
+use Webjump\RabbitMQManagement\Model\Queue\Builders\QueueConsumerCommand;
+use Webjump\RabbitMQManagement\Model\QueueHelper;
 use Webjump\RabbitMQManagement\Model\Requests\GetQueueByIdFactory;
 
 class GetAvailableConsumersQuantity
@@ -19,14 +21,28 @@ class GetAvailableConsumersQuantity
     /** @var GetQueueByIdFactory */
     private $getQueueByIdFactory;
 
+    /** @var QueueConsumerCommand */
+    private $queueConsumerCommandBuilder;
+
+    /** @var QueueHelper */
+    private $queueHelper;
+
     /**
-     * GetAvailableConsumers constructor.
+     * GetAvailableConsumersQuantity constructor.
      *
      * @param GetQueueByIdFactory $getQueueByIdFactory
+     * @param QueueConsumerCommand $queueConsumerCommandBuilder
+     * @param QueueHelper $queueHelper
      */
-    public function __construct(GetQueueByIdFactory $getQueueByIdFactory)
+    public function __construct(
+        GetQueueByIdFactory  $getQueueByIdFactory,
+        QueueConsumerCommand $queueConsumerCommandBuilder,
+        QueueHelper          $queueHelper
+    )
     {
         $this->getQueueByIdFactory = $getQueueByIdFactory;
+        $this->queueConsumerCommandBuilder = $queueConsumerCommandBuilder;
+        $this->queueHelper = $queueHelper;
     }
 
     /**
@@ -35,6 +51,7 @@ class GetAvailableConsumersQuantity
      * @param array $queue
      *
      * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(array $queue): int
     {
@@ -50,32 +67,15 @@ class GetAvailableConsumersQuantity
         $response = $request->doRequest();
         $responseData = $response->getBodyArray();
 
-        $consumers = $responseData['consumers'] ?? 0;
+        $command = $this->queueConsumerCommandBuilder->build($queue);
+        $consumers = $this->queueHelper->getCurrentConsumersQuantity($command);
         $maxConsumers = (int)$queue['max_consumers'] ?? 0;
 
         if ($consumers < $maxConsumers) {
             $queueMessages = $responseData['messages'] ?? 0;
             $messagesByConsumer = (int)$queue['read_messages'] ?? 0;
-            return $this->calculateNeededConsumers($queueMessages, $maxConsumers, $messagesByConsumer);
+            return $this->queueHelper->calculateNeededConsumers($queueMessages, $maxConsumers, $messagesByConsumer);
         }
         return 0;
-    }
-
-    /**
-     * CalculateNeededConsumers method
-     *
-     * @param int $queueMessages
-     * @param int $maxConsumers
-     * @param int $messagesByConsumer
-     *
-     * @return int
-     */
-    private function calculateNeededConsumers(int $queueMessages, int $maxConsumers, int $messagesByConsumer): int
-    {
-        $neededConsumers = ceil((float)($queueMessages / $messagesByConsumer));
-        if ($neededConsumers > $maxConsumers) {
-            return $maxConsumers;
-        }
-        return (int)$neededConsumers;
     }
 }
