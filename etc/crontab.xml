@@ -5,7 +5,7 @@
         <job name="webjump_rabbitmq_management_create_consumers"
              instance="Webjump\RabbitMQManagement\Cron\CreateConsumers"
              method="execute">
-            <schedule>*/1 * * * *</schedule>
+            <schedule>* * * * *</schedule>
         </job>
     </group>
 </config>

@@ -5,4 +5,10 @@
                 type="Webjump\RabbitMQManagement\Model\Http\Client\ZendClient"/>
     <preference for="Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface"
                 type="Webjump\RabbitMQManagement\Model\Http\Data\Response"/>
+
+    <type name="Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers">
+        <arguments>
+            <argument name="shellBackground" xsi:type="object">shellBackground</argument>
+        </arguments>
+    </type>
 </config>
