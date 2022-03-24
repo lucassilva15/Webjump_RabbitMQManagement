@@ -93,7 +93,7 @@ class Queue extends Select
         try {
             return $this->queueService->getQueueList();
         } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage(__('Could not connect with RabbitMQ Service.'));
+            $this->messageManager->addErrorMessage(__("Could not connect with RabbitMQ Service - {$e->getMessage()}"));
             return [];
         }
     }
