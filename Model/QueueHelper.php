@@ -12,23 +12,30 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model;
 
-use Magento\Framework\ShellInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\ProcessFactory;
 
 class QueueHelper
 {
-    const GET_QUEUE_CONSUMERS_QUANTITY_COMMAND = "ps aux --no-heading | grep '%s' | wc -l";
+    const GET_QUEUE_CONSUMERS_QUANTITY_COMMAND = ['ps', '-aux'];
 
-    /** @var ShellInterface */
-    private $shell;
+    /** @var ProcessFactory */
+    private $processFactory;
+
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * QueueHelper constructor.
      *
-     * @param ShellInterface $shell
+     * @param ProcessFactory $processFactory
+     * @param LoggerInterface $logger
      */
-    public function __construct(ShellInterface $shell)
+    public function __construct(ProcessFactory $processFactory, LoggerInterface $logger)
     {
-        $this->shell = $shell;
+        $this->processFactory = $processFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -54,11 +61,20 @@ class QueueHelper
      *
      * @param string $command
      *
-     * @return string
+     * @return int
      */
-    public function getCurrentConsumersQuantity(string $command): string
+    public function getCurrentConsumersQuantity(string $command): int
     {
-        $command = sprintf(self::GET_QUEUE_CONSUMERS_QUANTITY_COMMAND, $command);
-        return exec($command);
+        $process = $this->processFactory->create([
+            'command' => self::GET_QUEUE_CONSUMERS_QUANTITY_COMMAND
+        ]);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        $output = $process->getOutput();
+
+        return substr_count($output, $command);
     }
 }
