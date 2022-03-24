@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Block\Adminhtml\Form\Field\Columns;
 
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 use Webjump\RabbitMQManagement\Model\Queue\Service;
@@ -21,18 +23,27 @@ class Queue extends Select
     /** @var Service */
     private $queueService;
 
+    /** @var ManagerInterface */
+    private $messageManager;
+
     /**
      * Queue constructor.
      *
      * @param Context $context
      * @param Service $queueService
+     * @param ManagerInterface $messageManager
      * @param array $data
      */
-    public function __construct(Context $context, Service $queueService, array $data = [])
+    public function __construct(
+        Context          $context,
+        Service          $queueService,
+        ManagerInterface $messageManager,
+        array            $data = []
+    )
     {
-
         parent::__construct($context, $data);
         $this->queueService = $queueService;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -79,6 +90,11 @@ class Queue extends Select
      */
     private function getSourceOptions(): array
     {
-        return $this->queueService->getQueueList();
+        try {
+            return $this->queueService->getQueueList();
+        } catch (LocalizedException $e) {
+            $this->messageManager->addErrorMessage(__('Could not connect with RabbitMQ Service.'));
+            return [];
+        }
     }
 }

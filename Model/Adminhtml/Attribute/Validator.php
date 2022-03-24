@@ -87,6 +87,9 @@ class Validator extends ArraySerialized
         if ($this->config->isEnabled($this->scopeCode)) {
             foreach ($mappingValues as $value) {
                 if ($this->checkIfValueIsArray($value) === true) {
+                    if(empty($value['queue']) === true){
+                        throw new ValidationException(__('Queue value can\'t be empty'));
+                    }
                     if ($this->checkIfQueueIsDuplicated($attributeCodes, $value['queue'])) {
                         throw new ValidationException(__('Cannot repeat RabbitMQ Queue'));
                     }
