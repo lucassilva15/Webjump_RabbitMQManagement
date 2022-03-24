@@ -73,6 +73,7 @@ final class GetQueueById extends AbstractHttpRequest implements HttpServiceInter
      * DoRequest method
      *
      * @return HttpResponseInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function doRequest(): HttpResponseInterface
     {
