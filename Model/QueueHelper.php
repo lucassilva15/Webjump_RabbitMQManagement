@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessFactory;
 
@@ -23,19 +22,14 @@ class QueueHelper
     /** @var ProcessFactory */
     private $processFactory;
 
-    /** @var LoggerInterface */
-    private $logger;
-
     /**
      * QueueHelper constructor.
      *
      * @param ProcessFactory $processFactory
-     * @param LoggerInterface $logger
      */
-    public function __construct(ProcessFactory $processFactory, LoggerInterface $logger)
+    public function __construct(ProcessFactory $processFactory)
     {
         $this->processFactory = $processFactory;
-        $this->logger = $logger;
     }
 
     /**
