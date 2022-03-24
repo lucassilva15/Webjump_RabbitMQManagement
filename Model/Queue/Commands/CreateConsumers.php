@@ -13,28 +13,26 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
 use Magento\Framework\ShellInterface;
-use Symfony\Component\Process\PhpExecutableFinder;
+use Webjump\RabbitMQManagement\Model\Queue\Builders\QueueConsumerCommand;
 
 class CreateConsumers
 {
-    const CONSUMERS_COMMAND = "/bin/magento queue:consumers:start %s %s";
-
     /** @var ShellInterface */
     private $shellBackground;
 
-    /** @var PhpExecutableFinder */
-    private $phpExecutableFinder;
+    /** @var QueueConsumerCommand */
+    private $queueConsumerCommandBuilder;
 
     /**
      * CreateConsumers constructor.
      *
      * @param ShellInterface $shellBackground
-     * @param PhpExecutableFinder $phpExecutableFinder
+     * @param QueueConsumerCommand $queueConsumerCommandBuilder
      */
-    public function __construct(ShellInterface $shellBackground, PhpExecutableFinder $phpExecutableFinder)
+    public function __construct(ShellInterface $shellBackground, QueueConsumerCommand $queueConsumerCommandBuilder)
     {
         $this->shellBackground = $shellBackground;
-        $this->phpExecutableFinder = $phpExecutableFinder;
+        $this->queueConsumerCommandBuilder = $queueConsumerCommandBuilder;
     }
 
     /**
@@ -48,16 +46,9 @@ class CreateConsumers
      */
     public function execute(array $queue, int $consumersToBeCreated)
     {
-        $php = $this->phpExecutableFinder->find() ?: 'php';
+        $command = $this->queueConsumerCommandBuilder->build($queue);
         for ($consumersCreated = 0; $consumersCreated < $consumersToBeCreated; $consumersCreated++) {
-            $arguments = [
-                "--max-messages={$queue['read_messages']}",
-                $queue['queue'],
-            ];
-
-            $command = $php . ' ' . BP . self::CONSUMERS_COMMAND;
-
-            $this->shellBackground->execute($command, $arguments);
+            $this->shellBackground->execute($command);
         }
     }
 }
