@@ -33,6 +33,7 @@ class GetQueueList
      * Execute method
      *
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(): array
     {

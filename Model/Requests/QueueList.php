@@ -46,6 +46,7 @@ final class QueueList extends AbstractHttpRequest implements HttpServiceInterfac
      * DoRequest method
      *
      * @return HttpResponseInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function doRequest(): HttpResponseInterface
     {

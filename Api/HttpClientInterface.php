@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Api;
 
+use Magento\Framework\Exception\LocalizedException;
 use Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface;
 
 interface HttpClientInterface
@@ -22,6 +23,7 @@ interface HttpClientInterface
      * @param HttpServiceInterface $service
      *
      * @return HttpResponseInterface
+     * @throws LocalizedException
      */
     public function doRequest(HttpServiceInterface $service): HttpResponseInterface;
 }

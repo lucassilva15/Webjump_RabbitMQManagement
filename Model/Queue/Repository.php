@@ -49,6 +49,7 @@ class Repository
      * GetQueueList method
      *
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getQueueList(): array
     {
@@ -61,6 +62,7 @@ class Repository
      * @param array $queue
      *
      * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getAvailableConsumersQuantity(array $queue): int
     {
@@ -74,6 +76,7 @@ class Repository
      * @param int $consumersToBeCreated
      *
      * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function createConsumers(array $queue, int $consumersToBeCreated)
     {

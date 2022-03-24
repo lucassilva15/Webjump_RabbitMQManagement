@@ -31,6 +31,7 @@ class Service
      * GetQueueList method
      *
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getQueueList(): array
     {
@@ -43,6 +44,7 @@ class Service
      * @param array $queue
      *
      * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getAvailableConsumersQuantity(array $queue): int
     {
@@ -56,6 +58,7 @@ class Service
      * @param int $consumersToBeCreated
      *
      * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function createConsumers(array $queue, int $consumersToBeCreated)
     {
