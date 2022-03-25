@@ -10,11 +10,11 @@
 
 declare(strict_types=1);
 
-namespace Webjump\RabbitMQManagement\Model\Http\Data;
+namespace Webjump\RabbitMQManagement\Infrastructure\Gateway\Http;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\Serialize\Serializer\Json;
-use Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface;
+use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts\HttpResponseInterface;
 
 final class Response extends DataObject implements HttpResponseInterface
 {

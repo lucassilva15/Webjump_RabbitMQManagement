@@ -10,19 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Webjump\RabbitMQManagement\Model\Queue\Builders;
+namespace Webjump\RabbitMQManagement\Model\Queue;
 
 use Symfony\Component\Process\PhpExecutableFinder;
+use const BP;
 
-class QueueConsumerCommand
+class Helper
 {
-    const CONSUMERS_COMMAND = "/bin/magento queue:consumers:start %s %s";
+    const START_CONSUMERS_COMMAND = "/bin/magento queue:consumers:start %s %s";
 
     /** @var PhpExecutableFinder */
     private $phpExecutableFinder;
 
     /**
-     * QueueConsumerCommand constructor.
+     * Helper constructor.
      *
      * @param PhpExecutableFinder $phpExecutableFinder
      */
@@ -32,21 +33,24 @@ class QueueConsumerCommand
     }
 
     /**
-     * Build method
+     * BuildStartConsumersCommand method
      *
-     * @param array $queue
+     * @param int $maxMessagesToRead
+     * @param string $queueName
      *
      * @return string
      */
-    public function build(array $queue): string
+    public function buildStartConsumersCommand(int $maxMessagesToRead, string $queueName): string
     {
         $php = $this->phpExecutableFinder->find() ?: 'php';
+
         $arguments = [
-            "--max-messages={$queue['read_messages']}",
-            $queue['queue'],
+            "--max-messages=$maxMessagesToRead",
+            $queueName,
         ];
 
-        $command = $php . ' ' . BP . self::CONSUMERS_COMMAND;
+        $command = $php . ' ' . BP . self::START_CONSUMERS_COMMAND;
+
         return vsprintf($command, $arguments);
     }
 }

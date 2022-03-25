@@ -12,21 +12,24 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
-use Webjump\RabbitMQManagement\Model\Requests\QueueListFactory;
+use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\ZendClient;
 
-class GetQueueList
+class GetRabbitQueueList
 {
-    /** @var QueueListFactory */
-    private $queueListFactory;
+    const PATH = '/api/queues';
+
+    /** @var ZendClient */
+    private $client;
 
     /**
      * GetQueueList constructor.
      *
-     * @param QueueListFactory $queueListFactory
+     * @param ZendClient $client
      */
-    public function __construct(QueueListFactory $queueListFactory)
+    public function __construct(ZendClient $client)
     {
-        $this->queueListFactory = $queueListFactory;
+
+        $this->client = $client;
     }
 
     /**
@@ -37,12 +40,10 @@ class GetQueueList
      */
     public function execute(): array
     {
-        $queues = [];
-
-        $request = $this->queueListFactory->create();
-        $response = $request->doRequest();
+        $response = $this->client->doRequest(\Zend_Http_Client::GET, self::PATH);
         $items = $response->getBodyArray();
 
+        $queues = [];
         if (empty($items) === true) {
             return $queues;
         }

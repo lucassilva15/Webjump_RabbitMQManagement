@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Webjump\RabbitMQManagement\Api\Data;
+namespace Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts;
 
 interface HttpResponseInterface
 {

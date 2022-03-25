@@ -11,10 +11,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Webjump\RabbitMQManagement\Api\HttpClientInterface"
-                type="Webjump\RabbitMQManagement\Model\Http\Client\ZendClient"/>
-    <preference for="Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface"
-                type="Webjump\RabbitMQManagement\Model\Http\Data\Response"/>
+    <preference for="Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts\HttpClientInterface"
+                type="Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\ZendClient"/>
+    <preference for="Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts\HttpResponseInterface"
+                type="Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Response"/>
 
     <type name="Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers">
         <arguments>

@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-namespace Webjump\RabbitMQManagement\Model;
+namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessFactory;
 
-class QueueHelper
+class GetActiveConsumers
 {
     const GET_QUEUE_CONSUMERS_QUANTITY_COMMAND = ['ps', '-aux'];
 
@@ -23,7 +23,7 @@ class QueueHelper
     private $processFactory;
 
     /**
-     * QueueHelper constructor.
+     * GetActiveConsumers constructor.
      *
      * @param ProcessFactory $processFactory
      */
@@ -33,40 +33,24 @@ class QueueHelper
     }
 
     /**
-     * CalculateNeededConsumers method
-     *
-     * @param int $queueMessages
-     * @param int $maxConsumers
-     * @param int $messagesByConsumer
-     *
-     * @return int
-     */
-    public function calculateNeededConsumers(int $queueMessages, int $maxConsumers, int $messagesByConsumer): int
-    {
-        $neededConsumers = ceil((float)($queueMessages / $messagesByConsumer));
-        if ($neededConsumers > $maxConsumers) {
-            return $maxConsumers;
-        }
-        return (int)$neededConsumers;
-    }
-
-    /**
      * GetCurrentConsumersQuantity method
      *
      * @param string $command
      *
      * @return int
      */
-    public function getCurrentConsumersQuantity(string $command): int
+    public function execute(string $command): int
     {
         $process = $this->processFactory->create([
             'command' => self::GET_QUEUE_CONSUMERS_QUANTITY_COMMAND
         ]);
+
         $process->run();
 
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
+
         $output = $process->getOutput();
 
         return substr_count($output, $command);

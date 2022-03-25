@@ -13,36 +13,100 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Queue;
 
 use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers;
-use Webjump\RabbitMQManagement\Model\Queue\Commands\GetAvailableConsumersQuantity;
-use Webjump\RabbitMQManagement\Model\Queue\Commands\GetQueueList;
+use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateQueueInfo;
+use Webjump\RabbitMQManagement\Model\Queue\Commands\GetActiveConsumers;
+use Webjump\RabbitMQManagement\Model\Queue\Commands\GetRabbitQueueList;
+use Webjump\RabbitMQManagement\Model\Queue\Commands\GetRabbitQueueByName;
 
 class Repository
 {
-    /** @var GetQueueList */
+    /** @var GetRabbitQueueList */
     private $getQueueListCommand;
-
-    /** @var GetAvailableConsumersQuantity */
-    private $getAvailableConsumersQuantityCommand;
 
     /** @var CreateConsumers */
     private $createConsumersCommand;
 
+    /** @var CreateQueueInfo */
+    private $createQueueInfoCommand;
+
+    /** @var GetActiveConsumers */
+    private $getActiveConsumersCommand;
+
+    /** @var GetRabbitQueueByName */
+    private $getRabbitQueueByNameCommand;
+
     /**
      * Repository constructor.
      *
-     * @param GetQueueList $getQueueListCommand
-     * @param GetAvailableConsumersQuantity $getAvailableConsumersQuantityCommand
+     * @param CreateQueueInfo $createQueueInfoCommand
+     * @param GetActiveConsumers $getActiveConsumersCommand
+     * @param GetRabbitQueueByName $getRabbitQueueByNameCommand
      * @param CreateConsumers $createConsumersCommand
+     * @param GetRabbitQueueList $getQueueListCommand
      */
     public function __construct(
-        GetQueueList                  $getQueueListCommand,
-        GetAvailableConsumersQuantity $getAvailableConsumersQuantityCommand,
-        CreateConsumers               $createConsumersCommand
+        CreateQueueInfo      $createQueueInfoCommand,
+        GetActiveConsumers   $getActiveConsumersCommand,
+        GetRabbitQueueByName $getRabbitQueueByNameCommand,
+        CreateConsumers      $createConsumersCommand,
+        GetRabbitQueueList   $getQueueListCommand
     )
     {
-        $this->getQueueListCommand = $getQueueListCommand;
-        $this->getAvailableConsumersQuantityCommand = $getAvailableConsumersQuantityCommand;
         $this->createConsumersCommand = $createConsumersCommand;
+        $this->getActiveConsumersCommand = $getActiveConsumersCommand;
+        $this->getRabbitQueueByNameCommand = $getRabbitQueueByNameCommand;
+        $this->createQueueInfoCommand = $createQueueInfoCommand;
+        $this->getQueueListCommand = $getQueueListCommand;
+    }
+
+    /**
+     * CreateQueueInfo method
+     *
+     * @param array $queueInfo
+     *
+     * @return QueueInfo
+     */
+    public function createQueueInfo(array $queueInfo): QueueInfo
+    {
+        return $this->createQueueInfoCommand->execute($queueInfo);
+    }
+
+    /**
+     * GetActiveConsumers method
+     *
+     * @param string $command
+     *
+     * @return int
+     */
+    public function getActiveConsumers(string $command): int
+    {
+        return $this->getActiveConsumersCommand->execute($command);
+    }
+
+    /**
+     * GetRabbitQueue method
+     *
+     * @param string $queueCode
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getRabbitQueueByName(string $queueCode): array
+    {
+        return $this->getRabbitQueueByNameCommand->execute($queueCode);
+    }
+
+    /**
+     * CreateConsumers method
+     *
+     * @param QueueInfo $queueInfo
+     *
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function createConsumers(QueueInfo $queueInfo)
+    {
+        $this->createConsumersCommand->execute($queueInfo);
     }
 
     /**
@@ -54,32 +118,5 @@ class Repository
     public function getQueueList(): array
     {
         return $this->getQueueListCommand->execute();
-    }
-
-    /**
-     * GetAvailableConsumersQuantity method
-     *
-     * @param array $queue
-     *
-     * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function getAvailableConsumersQuantity(array $queue): int
-    {
-        return $this->getAvailableConsumersQuantityCommand->execute($queue);
-    }
-
-    /**
-     * CreateConsumers method
-     *
-     * @param array $queue
-     * @param int $consumersToBeCreated
-     *
-     * @return void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function createConsumers(array $queue, int $consumersToBeCreated)
-    {
-        $this->createConsumersCommand->execute($queue, $consumersToBeCreated);
     }
 }

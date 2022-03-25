@@ -10,9 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Webjump\RabbitMQManagement\Api;
-
-use Webjump\RabbitMQManagement\Api\Data\HttpResponseInterface;
+namespace Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts;
 
 interface HttpServiceInterface
 {
@@ -47,7 +45,11 @@ interface HttpServiceInterface
     /**
      * DoRequest method
      *
+     * @param string $method
+     * @param string $path
+     * @param array $options
+     *
      * @return HttpResponseInterface
      */
-    public function doRequest(): HttpResponseInterface;
+    public function doRequest(string $method, string $path, array $options = []): HttpResponseInterface;
 }

@@ -13,40 +13,49 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
 use Magento\Framework\ShellInterface;
-use Webjump\RabbitMQManagement\Model\Queue\Builders\QueueConsumerCommand;
+use Webjump\RabbitMQManagement\Model\Queue\Helper;
+use Webjump\RabbitMQManagement\Model\Queue\QueueInfo;
 
 class CreateConsumers
 {
     /** @var ShellInterface */
     private $shellBackground;
 
-    /** @var QueueConsumerCommand */
-    private $queueConsumerCommandBuilder;
+    /** @var Helper */
+    private $helper;
 
     /**
      * CreateConsumers constructor.
      *
      * @param ShellInterface $shellBackground
-     * @param QueueConsumerCommand $queueConsumerCommandBuilder
+     * @param Helper $queueConsumerCommandBuilder
      */
-    public function __construct(ShellInterface $shellBackground, QueueConsumerCommand $queueConsumerCommandBuilder)
+    public function __construct(ShellInterface $shellBackground, Helper $helper)
     {
         $this->shellBackground = $shellBackground;
-        $this->queueConsumerCommandBuilder = $queueConsumerCommandBuilder;
+        $this->helper = $helper;
     }
 
     /**
      * Execute method
      *
-     * @param array $queue
-     * @param int $consumersToBeCreated
+     * @param QueueInfo $queueInfo
      *
      * @return void
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function execute(array $queue, int $consumersToBeCreated)
+    public function execute(QueueInfo $queueInfo)
     {
-        $command = $this->queueConsumerCommandBuilder->build($queue);
+        $consumersToBeCreated = $queueInfo->getNeededConsumers();
+        if ($consumersToBeCreated <= 0) {
+            return;
+        }
+
+        $command = $this->helper->buildStartConsumersCommand(
+            $queueInfo->getMaxMessagesToRead(),
+            $queueInfo->getQueueName()
+        );
+
         for ($consumersCreated = 0; $consumersCreated < $consumersToBeCreated; $consumersCreated++) {
             $this->shellBackground->execute($command);
         }

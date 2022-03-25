@@ -82,23 +82,41 @@ class Validator extends ArraySerialized
      */
     public function save(): Validator
     {
-        $attributeCodes = [];
         $mappingValues = (array)$this->getValue();
+
         if ($this->config->isEnabled($this->scopeCode)) {
+            $attributeCodes = [];
             foreach ($mappingValues as $value) {
-                if ($this->checkIfValueIsArray($value) === true) {
-                    if(empty($value['queue']) === true){
-                        throw new ValidationException(__('Queue value can\'t be empty'));
-                    }
-                    if ($this->checkIfQueueIsDuplicated($attributeCodes, $value['queue'])) {
-                        throw new ValidationException(__('Cannot repeat RabbitMQ Queue'));
-                    }
-                    $attributeCodes[] = $value['queue'];
+                if ($this->checkIfValueIsArray($value) === false) {
+                    continue;
                 }
+
+                $this->validateValue($attributeCodes, $value);
+                $attributeCodes[] = $value['queue'];
             }
         }
 
         return parent::save();
+    }
+
+    /**
+     * ValidateValue method
+     *
+     * @param array $attributeCodes
+     * @param $value
+     *
+     * @return void
+     * @throws ValidationException
+     */
+    private function validateValue(array $attributeCodes, $value): void
+    {
+        if (empty($value['queue']) === true) {
+            throw new ValidationException(__('Queue value can\'t be empty'));
+        }
+
+        if ($this->checkIfQueueIsDuplicated($attributeCodes, $value['queue'])) {
+            throw new ValidationException(__('Can\'t save the same queue more than once!'));
+        }
     }
 
     /**

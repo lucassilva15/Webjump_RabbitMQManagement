@@ -14,13 +14,10 @@ namespace Webjump\RabbitMQManagement\Block\Adminhtml\Form\Field;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
+use Webjump\RabbitMQManagement\Model\Queue\QueueInfo;
 
 class Queues extends AbstractFieldArray
 {
-    const ENABLED_COLUMN = 'enabled';
-    const QUEUE_COLUMN = 'queue';
-    const MAX_CONSUMERS_COLUMN = 'max_consumers';
-    const READ_MESSAGES_COLUMN = 'read_messages';
 
     /** @var Columns\Enable */
     private $enabledColumnRenderer;
@@ -36,20 +33,20 @@ class Queues extends AbstractFieldArray
      */
     protected function _prepareToRender()
     {
-        $this->addColumn(self::ENABLED_COLUMN, [
+        $this->addColumn(QueueInfo::ENABLED_FIELD, [
             'label' => __('Enable'),
             'renderer' => $this->getEnabledColumnRenderer()
         ]);
-        $this->addColumn(self::QUEUE_COLUMN, [
+        $this->addColumn(QueueInfo::QUEUE_FIELD, [
             'label' => __('Queue'),
             'renderer' => $this->getQueueColumnRenderer()
         ]);
-        $this->addColumn(self::MAX_CONSUMERS_COLUMN, [
+        $this->addColumn(QueueInfo::MAX_CONSUMERS_FIELD, [
             'label' => __('Max Consumers'),
             'class' => 'required-entry validate-digits validate-number'
         ]);
-        $this->addColumn(self::READ_MESSAGES_COLUMN, [
-            'label' => __('Read Messages'),
+        $this->addColumn(QueueInfo::MAX_MESSAGES_TO_READ_FIELD, [
+            'label' => __('Max messages to Read'),
             'class' => 'required-entry validate-digits validate-number'
         ]);
     }
@@ -65,12 +62,12 @@ class Queues extends AbstractFieldArray
     protected function _prepareArrayRow(DataObject $row): void
     {
         $options = [];
-        $enabled = $row->getData(self::ENABLED_COLUMN);
+        $enabled = $row->getData(QueueInfo::ENABLED_FIELD);
         if ($enabled !== null) {
             $options['option_' . $this->getEnabledColumnRenderer()->calcOptionHash($enabled)] = 'selected="selected"';
         }
 
-        $queue = $row->getData(self::QUEUE_COLUMN);
+        $queue = $row->getData(QueueInfo::QUEUE_FIELD);
         if ($queue !== null) {
             $options['option_' . $this->getQueueColumnRenderer()->calcOptionHash($queue)] = 'selected="selected"';
         }
