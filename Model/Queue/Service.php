@@ -63,8 +63,12 @@ class Service
 
         foreach ($queueDataList as $queueData) {
             $queueInfo = $this->createQueueInfo($queueData);
-            $queueName = $queueInfo->getQueueName();
 
+            if($queueInfo->isEnabled() === false){
+                continue;
+            }
+
+            $queueName = $queueInfo->getQueueName();
             $startConsumersCommand = $this->helper->buildStartConsumersCommand(
                 $queueInfo->getMaxMessagesToRead(),
                 $queueName
