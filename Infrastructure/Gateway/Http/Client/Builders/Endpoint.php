@@ -47,9 +47,6 @@ class Endpoint
     public function build(string $resource): string
     {
         $protocol = $this->getProtocol();
-        if (empty($protocol) === true) {
-            throw new LocalizedException(__('RabbitMQ protocol is a required configuration.'));
-        }
 
         $host = $this->getHost();
         if (empty($host) === true) {
