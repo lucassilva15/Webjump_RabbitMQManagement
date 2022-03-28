@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace Webjump\RabbitMQManagement\Model\Queue;
 
-use JsonSerializable;
-
-class QueueInfo implements JsonSerializable
+class QueueInfo
 {
     const ENABLED_FIELD = 'enabled';
     const QUEUE_FIELD = 'queue';
@@ -231,15 +229,5 @@ class QueueInfo implements JsonSerializable
         }
 
         return $neededConsumers - $activeConsumers;
-    }
-
-    /**
-     * JsonSerialize method
-     *
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

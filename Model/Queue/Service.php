@@ -64,7 +64,7 @@ class Service
         foreach ($queueDataList as $queueData) {
             $queueInfo = $this->createQueueInfo($queueData);
 
-            if($queueInfo->isEnabled() === false){
+            if ($queueInfo->isEnabled() === false) {
                 continue;
             }
 
