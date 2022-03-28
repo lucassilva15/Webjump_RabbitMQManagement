@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue;
+
 use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers;
 use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateQueueInfo;
 use Webjump\RabbitMQManagement\Model\Queue\Commands\GetActiveConsumers;

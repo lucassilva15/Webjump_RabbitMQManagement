@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue\Commands;
+
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\ZendClient;
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Response;
 use Webjump\RabbitMQManagement\Model\Queue\Commands\GetRabbitQueueList;

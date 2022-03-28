@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model;
+
 use Magento\Framework\App\Config as ScopeConfig;
 use Webjump\RabbitMQManagement\Model\Config;
 

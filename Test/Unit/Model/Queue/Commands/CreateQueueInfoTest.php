@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue\Commands;
+
 use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateQueueInfo;
 use Webjump\RabbitMQManagement\Model\Queue\QueueInfo;
 use Webjump\RabbitMQManagement\Model\Queue\QueueInfoFactory;

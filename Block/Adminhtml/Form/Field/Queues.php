@@ -18,7 +18,6 @@ use Webjump\RabbitMQManagement\Model\Queue\QueueInfo;
 
 class Queues extends AbstractFieldArray
 {
-
     /** @var Columns\Enable */
     private $enabledColumnRenderer;
 

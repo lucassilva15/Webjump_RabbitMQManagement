@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue;
+
 use Webjump\RabbitMQManagement\Model\Queue\QueueInfo;
 
 class QueueInfoTest extends \PHPUnit\Framework\TestCase

@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue;
+
 use Magento\Framework\Serialize\Serializer\Json;
 use Webjump\RabbitMQManagement\Model\Config;
 use Webjump\RabbitMQManagement\Model\Queue\Helper;

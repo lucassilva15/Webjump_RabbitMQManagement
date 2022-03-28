@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+namespace Webjump\RabbitMQManagement\Test\Unit\Model\Queue\Commands;
+
 use Magento\Framework\App\Shell;
 use Webjump\RabbitMQManagement\Model\Queue\Commands\CreateConsumers;
 use Webjump\RabbitMQManagement\Model\Queue\Helper;

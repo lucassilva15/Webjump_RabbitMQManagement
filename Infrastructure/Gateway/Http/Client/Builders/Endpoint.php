@@ -15,7 +15,6 @@ namespace Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\Builders
 use Magento\Framework\Exception\LocalizedException;
 use Webjump\RabbitMQManagement\Model\AmqpConfig;
 use Webjump\RabbitMQManagement\Model\Config;
-use function Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Builders\__;
 
 class Endpoint
 {
