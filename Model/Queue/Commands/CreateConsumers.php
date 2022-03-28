@@ -28,7 +28,7 @@ class CreateConsumers
      * CreateConsumers constructor.
      *
      * @param ShellInterface $shellBackground
-     * @param Helper $queueConsumerCommandBuilder
+     * @param Helper $helper
      */
     public function __construct(ShellInterface $shellBackground, Helper $helper)
     {
