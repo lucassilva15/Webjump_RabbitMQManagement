@@ -22,13 +22,12 @@ class GetRabbitQueueList
     private $client;
 
     /**
-     * GetQueueList constructor.
+     * GetRabbitQueueList constructor.
      *
      * @param ZendClient $client
      */
     public function __construct(ZendClient $client)
     {
-
         $this->client = $client;
     }
 

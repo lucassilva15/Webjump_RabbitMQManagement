@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Webjump\RabbitMQManagement\Model\Queue\Commands;
 
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\ZendClient;
-use Zend_Http_Client as Zend_Http_ClientAlias;
+use Zend_Http_Client;
 
 class GetRabbitQueueByName
 {
@@ -43,7 +43,7 @@ class GetRabbitQueueByName
     public function execute(string $queueCode): array
     {
         $path = self::PATH . $queueCode;
-        $response = $this->client->doRequest(Zend_Http_ClientAlias::GET, $path);
+        $response = $this->client->doRequest(Zend_Http_Client::GET, $path);
         return $response->getBodyArray();
     }
 }

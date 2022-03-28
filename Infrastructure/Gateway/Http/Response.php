@@ -16,7 +16,7 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Serialize\Serializer\Json;
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Contracts\HttpResponseInterface;
 
-final class Response extends DataObject implements HttpResponseInterface
+class Response extends DataObject implements HttpResponseInterface
 {
     /** @var Json */
     private $json;

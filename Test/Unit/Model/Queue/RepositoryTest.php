@@ -26,7 +26,7 @@ class RepositoryTest extends \PHPUnit\Framework\TestCase
     /** @var GetActiveConsumers */
     private $getActiveConsumersCommandMock;
 
-    /** @var GetRabbitQueueByName */
+    /** @var GetRabbitQueueByNameTest */
     private $getRabbitQueueByNameCommandMock;
 
     /** @var CreateConsumers */
