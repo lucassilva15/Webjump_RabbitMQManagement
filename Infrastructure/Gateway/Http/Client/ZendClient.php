@@ -14,6 +14,7 @@ namespace Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\ZendClientFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 use Psr\Log\LoggerInterface;
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\Builders\Endpoint;
 use Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\Builders\Headers;
@@ -35,8 +36,12 @@ class ZendClient implements HttpClientInterface
 
     /** @var Endpoint */
     private $endpointBuilder;
+
     /** @var Headers */
     private $headersBuilder;
+
+    /** @var Json */
+    private $json;
 
     /**
      * ZendClient constructor.
@@ -45,13 +50,16 @@ class ZendClient implements HttpClientInterface
      * @param ResponseFactory $httpResponseFactory
      * @param LoggerInterface $logger
      * @param Endpoint $endpointBuilder
+     * @param Headers $headersBuilder
+     * @param Json $json
      */
     public function __construct(
         ZendClientFactory $zendClientFactory,
         ResponseFactory   $httpResponseFactory,
         LoggerInterface   $logger,
         Endpoint          $endpointBuilder,
-        Headers           $headersBuilder
+        Headers           $headersBuilder,
+        Json              $json
     )
     {
         $this->zendClientFactory = $zendClientFactory;
@@ -59,6 +67,7 @@ class ZendClient implements HttpClientInterface
         $this->logger = $logger;
         $this->endpointBuilder = $endpointBuilder;
         $this->headersBuilder = $headersBuilder;
+        $this->json = $json;
     }
 
     /**
@@ -88,7 +97,7 @@ class ZendClient implements HttpClientInterface
                 'options' => $options
             ];
 
-            $this->logger->info('Request: ' . json_encode($requestData));
+            $this->logger->info('Request: ' . $this->json->serialize($requestData));
 
             $result = $client->request();
         } catch (Zend_Http_Client_Exception $e) {
@@ -102,8 +111,10 @@ class ZendClient implements HttpClientInterface
             'headers' => $result->getHeaders()
         ];
 
-        $this->logger->info('Response: ' . json_encode($responseData));
+        $this->logger->info('Response: ' . $this->json->serialize($responseData));
 
-        return $this->httpResponseFactory->create(['data' => $responseData]);
+        return $this->httpResponseFactory->create([
+            'data' => $responseData]
+        );
     }
 }

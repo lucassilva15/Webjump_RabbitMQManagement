@@ -20,6 +20,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     /** @var Json */
     private $jsonMock;
 
+    /** @var array */
+    private $data;
+
     /** @var Response */
     private $instance;
 
@@ -94,21 +97,68 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     /**
      * TestGetBodyArray method
      *
+     * @param array $argsMock
+     * @param array $calls
+     * @param array $expectedResult
+     *
      * @return void
+     *
+     * @dataProvider getBodyArrayDataProvider
      */
-    public function testGetBodyArray()
+    public function testGetBodyArray(array $argsMock, array $calls, array $expectedResult)
     {
         // Arrange
-        $expectedResult = [];
         $this->jsonMock
-            ->expects($this->once())
+            ->expects($this->exactly($calls['json_unserialize']))
             ->method('unserialize')
-            ->willReturn($expectedResult);
+            ->willReturn($argsMock['json_unserialize']);
+        $instance = $this->getMockBuilder(Response::class)
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([$this->jsonMock, []])
+            ->disableArgumentCloning()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(['getBody'])
+            ->getMock();
+
+        $instance
+            ->expects($this->exactly($calls['instance_get_body']))
+            ->method('getBody')
+            ->willReturn($argsMock['instance_get_body']);
+
 
         // Act
-        $result = $this->instance->getBodyArray();
+        $result = $instance->getBodyArray();
 
         // Assert
         $this->assertEquals($expectedResult, $result);
+    }
+
+    public function getBodyArrayDataProvider(): array
+    {
+        return [
+            'shouldReturnArrayEmpty' => [
+                'argsMock' => [
+                    'instance_get_body' => '',
+                    'json_unserialize' => ['json']
+                ],
+                'calls' => [
+                    'instance_get_body' => 1,
+                    'json_unserialize' => 0
+                ],
+                'expectedResult' => []
+            ],
+            'shouldReturnJsonUnserialize' => [
+                'argsMock' => [
+                    'instance_get_body' => 'Not Empty',
+                    'json_unserialize' => ['json']
+                ],
+                'calls' => [
+                    'instance_get_body' => 2,
+                    'json_unserialize' => 1
+                ],
+                'expectedResult' => ['json']
+            ]
+        ];
     }
 }
