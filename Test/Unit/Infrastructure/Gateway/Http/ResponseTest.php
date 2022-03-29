@@ -126,7 +126,6 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
             ->method('getBody')
             ->willReturn($argsMock['instance_get_body']);
 
-
         // Act
         $result = $instance->getBodyArray();
 

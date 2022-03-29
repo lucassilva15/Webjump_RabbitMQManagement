@@ -75,12 +75,12 @@ class Validator extends ArraySerialized
     }
 
     /**
-     * Save method
+     * BeforeSave method
      *
      * @return Validator
-     * @throws Exception
+     * @throws ValidationException
      */
-    public function save(): Validator
+    public function beforeSave(): Validator
     {
         $mappingValues = (array)$this->getValue();
 
@@ -96,7 +96,7 @@ class Validator extends ArraySerialized
             }
         }
 
-        return parent::save();
+        return parent::beforeSave();
     }
 
     /**
