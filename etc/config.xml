@@ -14,7 +14,7 @@
     <default>
         <webjump_rabbitmq_management>
             <general>
-                <enabled>1000</enabled>
+                <enabled>0</enabled>
             </general>
             <rabbitmq_configuration>
                 <service_port>15672</service_port>
