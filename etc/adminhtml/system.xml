@@ -33,7 +33,7 @@
                 <field id="service_port" translate="label" type="text" sortOrder="20" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Service Port</label>
-                    <comment>RabbitMQ Service Port</comment>
+                    <comment>RabbitMQ Management Port</comment>
                     <validate>required-entry validate-digits validate-number</validate>
                 </field>
                 <field id="queues" translate="label" type="select" sortOrder="20"

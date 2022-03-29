@@ -21,4 +21,23 @@
             <argument name="shellBackground" xsi:type="object">shellBackground</argument>
         </arguments>
     </type>
+
+    <!--  Logger Section  -->
+    <virtualType name="Webjump\RabbitMQManagement\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/rabbitmq/queue.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Webjump\RabbitMQManagement\Logger\Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Webjump\RabbitMQManagement\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Webjump\RabbitMQManagement\Infrastructure\Gateway\Http\Client\ZendClient">
+        <arguments>
+            <argument name="logger" xsi:type="object">Webjump\RabbitMQManagement\Logger\Logger</argument>
+        </arguments>
+    </type>
 </config>
